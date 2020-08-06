@@ -8,15 +8,20 @@ FROM mongo:latest
 FROM mongo
 
 RUN mkdir /myimportedcsv
-COPY ./data/casoscovid19.csv /myimportedcsv/casoscovid19.csv
+COPY ./data/my.csv /myimportedcsv/casoscovid19.csv
 #RUN mongoimport --host mongodb --db exampleDb --collection contacts --type json --file /myimportedcsv/casoscovid19.csv --jsonArray
 
 #RUN mongoimport --host mongodb --db exampleDb --collection contacts --type csv  --file /myimportedcsv/casoscovid19.csv
 
 
-RUN echo "mongoimport mongodb --db exampleDb --collection contacts --type csv --headerline --drop /myimportedcsv/casoscovid19.csv" > /myimportedcsv/run.sh
+#RUN echo "mongoimport mongodb --db exampleDb --collection contacts --type csv --headerline --drop /myimportedcsv/casoscovid19.csv" > /myimportedcsv/run.sh
+#RUN echo "mongoimport -d mydb -c things --type csv --file /myimportedcsv/casoscovid19.csv --headerline" > /myimportedcsv/run.sh
+#RUN echo 'mongo admin -u admin -p admin --eval "db.getSiblingDB(\'dummydb\').createUser({user: \'dummyuser\', pwd: \'dummysecret\', roles: [\'readWrite\'] } )"' > /myimportedcsv/run1.sh
+RUN echo 'mongo --eval "db.getSiblingDB(\'dummydb\').createUser({user: \'dummyuser\', pwd: \'dummysecret\', roles: [\'readWrite\'] } )"' > /myimportedcsv/run1.sh
+#RUN echo "mongoimport --db=users --type=csv --headerline --file=/myimportedcsv/casoscovid19.csv" > /myimportedcsv/run2.sh
 
-RUN cp /myimportedcsv/run.sh /docker-entrypoint-initdb.d/
+RUN echo "mongoimport --db=users --type=csv --headerline --file=/myimportedcsv/casoscovid19.csv --ignoreBlanks" > /myimportedcsv/run2.sh
+RUN cp /myimportedcsv/*.sh /docker-entrypoint-initdb.d/
 
 #RUN mongod --fork --logpath /var/log/mongodb.log --dbpath /data/db2 
 #--smallfiles
